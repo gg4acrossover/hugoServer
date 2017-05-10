@@ -1,0 +1,42 @@
+baseurl = "https://gg4acrossover.github.io/hugosite/"
+copyright = "All rights reserved - 2016"
+disqusshortname = "gg4acrossover"
+enableEmoji = true
+languagecode = "vi-EN"
+paginate = 5
+pluralizelisttitles = false
+theme = "casper"
+title = "GG4aCrossover"
+[[menu.main]]
+identifier = "blog"
+name = "Home"
+pre = "<h4>My Site</h4>"
+url = "/"
+weight = -120
+[[menu.main]]
+name = "Github"
+pre = "<h4>Social</h4>"
+url = "https://github.com/gg4acrossover"
+weight = 100
+[[menu.main]]
+name = "Twitter"
+url = "https://twitter.com/viet142"
+weight = 101
+[params]
+author = "GG4aCrossover"
+authorlocation = "HaNoi, VietNam"
+authorwebsite = "http://gg4acrossover.github.io/"
+bio = "Coder nhân dân"
+cover = "images/cover.jpg"
+description = "Life is like riding a bicycle. To keep your balance, you must keep moving."
+githubName = "gg4acrossover"
+googleAnalyticsUserID = ""
+hideHUGOSupport = false
+logo = ""
+twitterName = "viet142"
+[permalinks]
+post = "/:slug/"
+[sitemap]
+ChangeFreq = ""
+Filename = "sitemap.xml"
+Priority = "-1"
