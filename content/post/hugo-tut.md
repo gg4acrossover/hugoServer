@@ -22,7 +22,7 @@ Blog hiện tại của mình sử dụng hugo.
 Trên trang chủ đã hướng dẫn chi tiết cách tạo site và gắn theme cho website nên mình không trình bày lại nữa.
 Blog mình sử dụng theme casper, dưới đây là đoạn template để chuyển page của nó.
 
-```
+{{< highlight js >}}
 <nav class="pagination" role="navigation">
 	{{if .HasPrev}}
 	    <a class="newer-posts" href="{{ "" | absURL -}}{{"page/"}}{{- add .PageNumber -1}}">&larr; Newer Posts</a>
@@ -32,7 +32,7 @@ Blog mình sử dụng theme casper, dưới đây là đoạn template để ch
 	    <a class="older-posts" href="{{ "" | absURL -}}{{"page/"}}{{- add .PageNumber 1}}">Older Posts &rarr;</a>
 	{{end}}
 </nav>
-```
+{{< /highlight >}}
 
 
 

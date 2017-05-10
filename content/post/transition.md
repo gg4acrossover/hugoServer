@@ -48,7 +48,7 @@ Cuối cùng là thực hiện animation chuyển đổi giữa 2 màn hình, qu
 
 Protocol có 2 method giúp ta xác định được cách thức transition
 
-{{< highlight cpp "style=emacs" >}}
+{{< highlight objc "style=monokai" >}}
 - (nullable id <UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
                           interactionControllerForAnimationController:(id <UIViewControllerAnimatedTransitioning>) animationController NS_AVAILABLE_IOS(7_0);
 
@@ -57,49 +57,48 @@ Protocol có 2 method giúp ta xác định được cách thức transition
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC  NS_AVAILABLE_IOS(7_0);
 
-{{< / highlight >}}
+{{< /highlight >}}
 
 Hàm đầu tiên dùng để bắt các sự kiện touch vào màn hình, trả về object implement *UIViewControllerInteractiveTransitioning*. 
 
 Hàm thứ hai xác định cách thức push/pop khi ta click action (next/back) trên thanh navigation bar, trả về object implement *UIViewControllerAnimatedTransitioning*. Các params giúp ta xác định được *fromVC* là viewcontroller nào, *toVC* là viewcontroller nào. Ở trường hợp di chuyển từ A sang B thì A là *fromVC* và B là *toVC*.
 Cuối cùng là param *operation*, đây là enum gồm có 3 value để xác định trạng thái push hay pop
 
-{{< highlight cpp "style=emacs" >}}
+{{< highlight objc "style=monokai" >}}
  UINavigationControllerOperationNone,
  UINavigationControllerOperationPush,
  UINavigationControllerOperationPop,
-{{< / highlight >}}
+{{< /highlight >}}
 
 #### UIViewControllerAnimatedTransitioning 
 có 2 phương thức
 
-{{< highlight cpp "style=emacs" >}}
+{{< highlight objc "style=monokai" >}}
 - (NSTimeInterval)transitionDuration:(nullable id <UIViewControllerContextTransitioning>)transitionContext;
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext;
-{{< / highlight >}}
+{{< /highlight >}}
 
 Để thực hiện animation ta cần 2 thông số, thông số đầu tiên là duration, hàm đầu tiên giúp ta xác định được điều đó. Phương thức thứ hai dùng để implement animation chuyển đổi. Trong hàm này ta cần đưa ra thông báo để biết được quá trình push/pop được hoàn thành
 
 
-{{< highlight cpp "style=emacs" >}}
+```
 [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-{{< / highlight >}}
+```
 
 #### Example
 **Bước 1:** Tạo ra object implement protocol *UIViewControllerAnimatedTransitioning*, trước hết xác định duration
 
-{{< highlight cpp "style=emacs" >}}
+{{< highlight objc "style=monokai" >}}
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     return 0.25;
 }
-{{< / highlight >}}
+{{< /highlight >}}
 
 Định nghĩa một animation đơn giản
 
-{{< highlight cpp "style=emacs" >}}
-
+{{< highlight objc "style=monokai" >}}
 /**
  * using example in 
  * https://www.objc.io/issues/5-ios7/view-controller-transitions/ 
@@ -128,7 +127,7 @@ có 2 phương thức
     }];
 
 }
-{{< / highlight >}}
+{{< /highlight >}}
 
 Phân tích chút nào:
 
@@ -140,7 +139,7 @@ Phân tích chút nào:
 **Bước 2:**
 Tạo object implement protocol *UINavigationControllerDelegate*, trong object này ta cần truyền vào object đã implement *UIViewControllerAnimatedTransitioning* trước đó.
 
-{{< highlight cpp "style=emacs" >}}
+{{< highlight objc "style=monokai" >}}
 -(id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                  animationControllerForOperation:(UINavigationControllerOperation)operation
                                               fromViewController:(UIViewController *)fromVC
@@ -148,17 +147,17 @@ Tạo object implement protocol *UINavigationControllerDelegate*, trong object n
 {
     // return your custom animation transition
 }
-{{< / highlight >}}
+{{< /highlight >}}
 
 **Bước 3**
 Setting ở viewcontroller, như ở trên ta có viewcontroller A -> B. Ở A ta cần làm như sau trước khi push.
 
-{{< highlight cpp "style=emacs" >}}
+{{< highlight objc "style=monokai" >}}
 //1.
 self.navigationController.delegate = /* your custom UINavigationControllerDelegate */;
 //2.
 [self.navigationController pushViewController:B animated:YES];
-{{< / highlight >}}
+{{< /highlight >}}
 
 Ở bước này ta đã có thể push/pop với animation, nhưng để *full service* ta sẽ gắn thêm *interactive animations*. Tuy nhiên ở giới hạn bài viết này mình sẽ chỉ nói về animation cho push và pop. Bạn có thể tìm hiểu chi tiết hơn ở [ví dụ](https://github.com/objcio/issue5-view-controller-transitions) của trang [objc.io](https://www.objc.io/)
 
