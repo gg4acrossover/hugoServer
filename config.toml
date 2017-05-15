@@ -7,6 +7,7 @@ paginate = 5
 pluralizelisttitles = false
 theme = "casper"
 title = "GG4aCrossover"
+googleAnalytics = "UA-99127158-1"
 [[menu.main]]
 identifier = "blog"
 name = "Home"
