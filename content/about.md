@@ -13,4 +13,5 @@ comments = false
 +++
 
 Tôi là developer nhân dân :D, chuyên môn của tôi là lập trình IOS, lập trình game sử dụng cocos2dx. Tôi có hứng thú tìm tòi thêm một chút về javascript nữa. Ngoài lập trình tôi chơi bóng rổ và khoái bi.a, thích đọc sách. Hãy liên lạc với tôi nếu bạn có chung sở thích :D.
+<hoangquocviet1402@gmail.com>
 
