@@ -6,7 +6,7 @@ draft = false
 image = ""
 menu = ""
 share = true
-slug = "tao-progress-hud-don-gian"
+slug = "tao-api-client-swift-3"
 tags = ["swift"]
 title = "Tạo APIClient với swift 3"
 
