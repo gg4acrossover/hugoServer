@@ -14,7 +14,7 @@ title = "register user simple"
 
 ### Giới thiệu
 
-Việc xác thực quá trình đăng kí mới user là công việc mà coder nào cũng phải gặp, thậm chí nó quen thuộc đến mức như cầm đũa hàng ngày vậy. Chúng ta có thể thực hiện việc validate thông tin ngay chính màn hình đăng ký, tuy nhiên cách này khó test và sẽ khó quản lý nếu có nhiều điều kiện đầu vào. Cách hay hơ là chúng ta có thể tách ra 1 object validator nhận thông tin đầu vào và trả ra thông báo thành công nếu thông tin nhập vào đúng, trả ra mã lỗi nếu thông tin nhập vào sai. 
+Việc xác thực quá trình đăng kí mới user là công việc mà coder nào cũng phải gặp, thậm chí nó quen thuộc đến mức như cầm đũa hàng ngày vậy. Chúng ta có thể thực hiện việc validate thông tin ngay chính màn hình đăng ký, tuy nhiên cách này khó test và sẽ khó quản lý nếu có nhiều điều kiện đầu vào. Cách hay hơn là chúng ta có thể tách ra 1 object validator nhận thông tin đầu vào và trả ra thông báo thành công nếu thông tin nhập vào đúng, trả ra mã lỗi nếu thông tin nhập vào sai. 
 
 Mình sẽ làm một ví dụ đơn giản thực hiện việc đăng ký mới user với các điều kiện: xác thực format email, xác thực password lớn hơn 8 ký tự có ít nhất 1 kí tự dạng số và ít nhất 1 ký tự dạng chữ và code test cho việc validate.
 
