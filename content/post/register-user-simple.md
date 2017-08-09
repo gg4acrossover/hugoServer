@@ -74,7 +74,9 @@ class ONPasswordValidateItem: ONRegisterUserProtocol {
 }
 {{< /highlight >}}
 
-OK, chúng ta đã có 2 class thực thi chức năng validate riêng biệt
+OK, chúng ta đã có 2 class thực thi chức năng validate riêng biệt. Tiếp theo, mình xây dựng đối tượng đảm nhận việc quản lý các validator.
+
+
 
 
 
