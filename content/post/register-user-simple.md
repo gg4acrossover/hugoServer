@@ -8,7 +8,7 @@ menu = ""
 share = true
 slug = "register-user-test"
 tags = ["tag1","tag2"]
-title = "register user và thực hiện test"
+title = "Register user và thực hiện test"
 
 +++
 
@@ -33,7 +33,7 @@ protocol ONRegisterUserProtocol {
 }
 {{< /highlight >}}
 
-### Xác thực Email
+### Xác thực và test
 
 Mình sẽ bắt đầu với việc xác thực format email, sử dụng protocol ONRegisterUserProtocol như ở trên
 
@@ -53,9 +53,12 @@ class ONEmailValidateItem: ONRegisterUserProtocol {
 {{< /highlight >}}
 
 Ở đây mình chưa implement hàm *isValid* (chỉ để 1 giá trị default là true trước), công việc trước nhất là viết unit test.
-Mình tạo lớp *ONTestEmailValid* kế thừa *XCTestCase* trong thư mục [ProjectName]Tests (ProjectName là tên project của bạn)
+Mình tạo lớp *ONTestEmailValid* kế thừa *XCTestCase* trong thư mục [ProjectName]Tests ([ProjectName] là tên project của bạn).
+Chú ý: nhớ thêm dòng @testable import [Projectname]
 
 {{< highlight objc "style=monokai" >}}
+@testable import ONRegisterUser
+
 class ONTestEmailValid: XCTestCase {
     func testEmailInvalidCharacter() {
         let isValid = ONEmailValidateItem(email: "example@gmail,com").isValid()
@@ -84,7 +87,7 @@ class ONTestEmailValid: XCTestCase {
 }
 {{< /highlight >}}
 
-Khi build test thì các test case hầu hết là fail :D
+Khi build test (command u) thì các test case hầu hết là fail :D
 
 ![testcase](/hugosite/images/note/testcase.png)
 
@@ -100,6 +103,10 @@ func isValid() -> Bool {
 
 Để nhanh chóng thì mình sử dụng NSPredicate và regEx cho việc filter (regEx thì copy qua google xài luôn thôi :D).
 check password làm tương tự như cách triển khai class *ONTestEmailValid*. 
+
+Sau khi implement lại hàm *isValid*, chúng ta chạy lại test, Done!
+
+![testcase](/hugosite/images/note/testcase_pass.png)
 
 OK, chúng ta đã có 2 class thực thi chức năng validate riêng biệt. Tiếp theo, mình xây dựng đối tượng đảm nhận việc quản lý các validator. Mục đích cho việc tạo lớp này là nhận đầu vào input và đưa ra output chung cho tất cả các validator.
 
@@ -128,8 +135,25 @@ class ONValidateRegisterUser {
 {{< /highlight >}}
 
 Mình tạo enum *ONRegisterResult* trả về case success khi cả email và pass đều validate thành công, ngược lại ra fail.
+Khi đó ở *Viewcontroller* ta chỉ đơn giản làm như sau
 
+{{< highlight objc "style=monokai" >}}
+let validator = ONValidateRegisterUser(email: self.userNameTextField.text!, password: self.passwordTextField.text!)
 
+switch validator.result {
+case .success(let str):
+    SHOW_ALERT(message: str, vc: self)
+case .fail(let str):
+    SHOW_ALERT(message: str, vc: self)
+}
+{{< /highlight >}}
+
+### Tổng hợp
+Tóm lược bài viết: để thực hiện việc register và TDD ta chú ý 3 việc sau:
+
+*. Tạo các lớp validator check đầu vào như username, password,...
+*. Tạo một lớp quản lý các validator, nhận đầu vào là các dữ liệu cần validate và trả ra result.
+*. Test trước khi code :D
 
 
 
