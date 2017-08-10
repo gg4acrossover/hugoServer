@@ -2,13 +2,13 @@
 author = ""
 comments = true
 date = "2017-08-09T16:41:23+07:00"
-draft = true
+draft = false
 image = ""
 menu = ""
 share = true
-slug = "post-title"
+slug = "register-user-test"
 tags = ["tag1","tag2"]
-title = "register user simple"
+title = "register user và thực hiện test"
 
 +++
 
@@ -47,34 +47,88 @@ class ONEmailValidateItem: ONRegisterUserProtocol {
     }
    
     func isValid() -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: self.email)
+        return true
     }
 }
 {{< /highlight >}}
 
-Để nhanh chóng thì ta sử dụng NSPredicate và regEx cho việc filter (regEx thì copy qua google xài luôn thôi :D).
-check password thì cũng tương tự thôi, câu lệnh RegEx cho ta filter password với 8 kí tự trở lên, ít nhất 1 ký tự số, 1 ký tự chữ.
+Ở đây mình chưa implement hàm *isValid* (chỉ để 1 giá trị default là true trước), công việc trước nhất là viết unit test.
+Mình tạo lớp *ONTestEmailValid* kế thừa *XCTestCase* trong thư mục [ProjectName]Tests (ProjectName là tên project của bạn)
 
 {{< highlight objc "style=monokai" >}}
-class ONPasswordValidateItem: ONRegisterUserProtocol {
-    var error: ONRegisterUserError = .invalidPassword
-    let password: String
-    
-    init(password: String) {
-        self.password = password
+class ONTestEmailValid: XCTestCase {
+    func testEmailInvalidCharacter() {
+        let isValid = ONEmailValidateItem(email: "example@gmail,com").isValid()
+        XCTAssertFalse(isValid)
     }
     
-    func isValid() -> Bool {
-        let passRegEx = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
-        let passTest = NSPredicate(format: "SELF MATCHES %@", passRegEx)
-        return passTest.evaluate(with: self.password)
+    func testEmailInvalidProvider() {
+        let isValid = ONEmailValidateItem(email: "example@.com").isValid()
+        XCTAssertFalse(isValid)
+    }
+    
+    func testEmailInvalidInComplete() {
+        let isValid = ONEmailValidateItem(email: "example@").isValid()
+        XCTAssertFalse(isValid)
+    }
+    
+    func testEmailInvalidUserName() {
+        let isValid = ONEmailValidateItem(email: "@a.com").isValid()
+        XCTAssertFalse(isValid)
+    }
+    
+    func testEmailValid() {
+        let isValid = ONEmailValidateItem(email: "example@a.com").isValid()
+        XCTAssertTrue(isValid)
     }
 }
 {{< /highlight >}}
 
-OK, chúng ta đã có 2 class thực thi chức năng validate riêng biệt. Tiếp theo, mình xây dựng đối tượng đảm nhận việc quản lý các validator.
+Khi build test thì các test case hầu hết là fail :D
+
+![testcase](/hugosite/images/note/testcase.png)
+
+Bây giờ mới đến bước implement hàm *isValid* để nó pass tất cả các case mình định nghĩa
+
+{{< highlight objc "style=monokai" >}}
+func isValid() -> Bool {
+    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+    return emailTest.evaluate(with: self.email)
+}
+{{< /highlight >}}
+
+Để nhanh chóng thì mình sử dụng NSPredicate và regEx cho việc filter (regEx thì copy qua google xài luôn thôi :D).
+check password làm tương tự như cách triển khai class *ONTestEmailValid*. 
+
+OK, chúng ta đã có 2 class thực thi chức năng validate riêng biệt. Tiếp theo, mình xây dựng đối tượng đảm nhận việc quản lý các validator. Mục đích cho việc tạo lớp này là nhận đầu vào input và đưa ra output chung cho tất cả các validator.
+
+{{< highlight objc "style=monokai" >}}
+class ONValidateRegisterUser {
+    
+    enum ONRegisterResult {
+        case success(String)
+        case fail(String)
+    }
+    
+    let result: ONRegisterResult
+    
+    init(email: String, password: String) {
+        let validator: [ONRegisterUserProtocol] = [ONEmailValidateItem(email: email),
+                                                   ONPasswordValidateItem(password: password)]
+        let invalids = validator.filter { !$0.isValid() }
+        
+        if invalids.count > 0 {
+            self.result = .fail("Wrong format")
+        } else {
+            self.result = .success("Done")
+        }
+    }
+}
+{{< /highlight >}}
+
+Mình tạo enum *ONRegisterResult* trả về case success khi cả email và pass đều validate thành công, ngược lại ra fail.
+
 
 
 
