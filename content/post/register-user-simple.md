@@ -7,7 +7,7 @@ image = ""
 menu = ""
 share = true
 slug = "register-user-test"
-tags = ["tag1","tag2"]
+tags = ["swift3","ios"]
 title = "Register user và thực hiện test"
 
 +++
