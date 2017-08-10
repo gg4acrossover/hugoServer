@@ -151,9 +151,9 @@ case .fail(let str):
 ### Tổng hợp
 Tóm lược bài viết: để thực hiện việc register và TDD ta chú ý 3 việc sau:
 
-*. Tạo các lớp validator check đầu vào như username, password,...
-*. Tạo một lớp quản lý các validator, nhận đầu vào là các dữ liệu cần validate và trả ra result.
-*. Test trước khi code :D
+* Tạo các lớp validator check đầu vào như username, password,...
+* Tạo một lớp quản lý các validator, nhận đầu vào là các dữ liệu cần validate và trả ra result.
+* Test trước khi code :D
 
 
 
