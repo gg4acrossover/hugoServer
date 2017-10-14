@@ -8,7 +8,7 @@ menu = ""
 share = true
 slug = "enum-swift"
 tags = ["swift","ios"]
-title = "enum result"
+title = "Enum result"
 
 +++
 
