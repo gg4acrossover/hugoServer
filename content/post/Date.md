@@ -47,7 +47,7 @@ Trong đối tượng *date* có 3 thuộc tính (tính bằng giây)
     dateFormatter.dateFormat = "dd/MM/yyyy"
 {{< /highlight >}}
 
-*DateFormatter* giúp ta convert *Date* sang *String* và ngược lại. Để hiển thị date lên app ta sẽ gán *dateFormat* cho đối tượng *DateFormatter* được tạo ra như ở ví dụ trên. Định dạng date format là một string, ơn giời là nó đi theo chuẩn, thể tham khảo ở [http://nsdateformatter.com/](http://nsdateformatter.com/). Thường thì server sẽ trả về cho client string date theo định dạng nào đó, ta cần phải xác định đúng định dạng để đưa về kết quả mong muốn. Chúng ta cũng không thể quên gán timezone để đưa về mốc thời gian ta qui định. Túm váy lại có hai bước cần làm khi tạo *DateFormater*
+*DateFormatter* giúp ta convert *Date* sang *String* và ngược lại. Để hiển thị date lên app ta sẽ gán *dateFormat* cho đối tượng *DateFormatter* được tạo ra như ở ví dụ trên. Định dạng date format là một string, ơn giời là nó đi theo chuẩn, tham khảo ở [http://nsdateformatter.com/](http://nsdateformatter.com/). Thường thì server sẽ trả về cho client string date theo định dạng nào đó, ta cần phải xác định đúng định dạng để đưa về kết quả mong muốn. Ta cũng không được quên gán timezone để đưa về mốc thời gian ta qui định. Túm váy lại có hai bước cần làm khi tạo *DateFormater*
 
 * Gắn timezone
 * Gắn dateFormat
