@@ -87,12 +87,9 @@ let calendar = Calendar.current
 let oneHourLater2 = calendar.date(byAdding: .hour, value: 1, to: now)
 {{< /highlight >}}
 
-Để giản tiện, chúng ta có thể tạo *extension* như cách các thư viện thường dùng. Có thể viết theo kiểu như vầy chăng
+Để giản tiện, chúng ta có thể tạo *extension* như cách các thư viện thường dùng [tham khảo](https://github.com/davedelong/Chronology/blob/master/Inspiration.md)
 
-{{< highlight objc "style=monokai" >}}
-let today = ...
-let tomorrow = today + .days(1)
-{{< /highlight >}}
+Vậy cuối cùng *date* có ăn được không? mời mọi người thưởng thức [source code](https://gist.github.com/gg4acrossover/ed80aefc44700d03661aee09eaa1a156) ví dụ trong bài để tự tìm ra câu trả lời :D.
 
 
 
