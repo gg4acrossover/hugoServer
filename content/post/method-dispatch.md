@@ -17,7 +17,7 @@ title = "Method dispath trong protocol"
 Method dispatch là thuật toán xác định cách thức vận hành method thông qua compiler. Nhắc đến method dispatch, thường người ta sẽ nói đến 2 kiểu điển hình:
 
 * Static dispatch: xác định hàm được chạy trong quá trình biên dịch.
-* Dynamic dispatch: xác định hàm được chạy trong quá trình runtime.
+* Dynamic dispatch: xác định hàm được chạy trong quá trình runtime, cái này thể hiện rõ nhất qua tính đa hình trong OOP.
 
 Với mỗi ngôn ngữ, tùy thuộc vào thiết kế mà có sự khác nhau về cách thức vận hành phương thức. Tỉ như, C sử dụng mô hình biên dịch tĩnh, javascript sử dụng mô hình biên dịch động, c++ phức tạp hơn, vừa có biên dịch tĩnh như C, vừa có biên dịch động (vitual function), còn Swift thì sao? 
 
