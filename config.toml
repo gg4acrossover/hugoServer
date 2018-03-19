@@ -3,10 +3,10 @@ copyright = "All rights reserved - 2016"
 disqusshortname = "gg4acrossover"
 enableEmoji = true
 languagecode = "vi-EN"
-paginate = 5
+paginate = 6
 pluralizelisttitles = false
-theme = "casper"
-title = "GG4aCrossover"
+theme = "casper-two"
+title = "VietHQ"
 googleAnalytics = "UA-99127158-1"
 [[menu.main]]
 identifier = "blog"
@@ -24,17 +24,35 @@ name = "Twitter"
 url = "https://twitter.com/viet142"
 weight = 101
 [params]
-author = "GG4aCrossover"
-authorlocation = "HaNoi, VietNam"
-authorwebsite = "http://gg4acrossover.github.io/"
-bio = "Coder nhân dân"
-cover = "images/cover.jpg"
-description = "Life is like riding a bicycle. To keep your balance, you must keep moving."
-githubName = "gg4acrossover"
-googleAnalyticsUserID = ""
-hideHUGOSupport = false
-logo = ""
-twitterName = "viet142"
+  title       = "VietHQ"
+  subtitle    = "Tìm đơn giản trong phức tạp"
+
+  cover       = ""
+  description = "VietHQ - Tìm đơn giản trong phức tạp"
+  metaDescription = ""
+  #googleAnalytics = ""
+  customCSS = []
+  RSSLink = ""
+
+  twitterName = ""
+  fbName = ""
+  githubName = ""
+
+  logo = ""
+  orgName = "viethq"
+  orgWebsite = "https://gg4acrossover.github.io/hugosite/"
+  orgDescription = "VietHQ - Tìm đơn giản trong phức tạp"
+
+  author = "viethq"
+  authorAvatar = ""
+  authorLocation = "VietNam"
+  authorWebsite = "https://github.com/gg4acrossover"
+  authorDescription = "VietHQ - Tìm đơn giản trong phức tạp"
+
+  pageNotFoundTitle = "404 - Page not found"
+
+  #casper or caspertwo
+  singleViewStyle = "casper"
 [permalinks]
 post = "/:slug/"
 [sitemap]
