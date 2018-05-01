@@ -2,7 +2,7 @@
 date = "2016-09-05T15:51:57+07:00"
 draft = false
 title = "Enum flag c++"
-image = ""
+image = "images/cover/5.jpg"
 slug = "Enum-flag-c-plus-plus"
 tags = ["c++"]
 comments = false
