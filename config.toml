@@ -30,7 +30,7 @@ weight = 101
   cover       = ""
   description = "VietHQ - Tìm đơn giản trong phức tạp"
   metaDescription = ""
-  #googleAnalytics = ""
+  googleAnalytics = "UA-99127158-1"
   customCSS = []
   RSSLink = ""
 
