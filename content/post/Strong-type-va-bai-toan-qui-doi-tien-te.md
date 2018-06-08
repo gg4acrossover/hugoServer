@@ -59,7 +59,11 @@ protocol MyUnit {
 }
 {{< /highlight >}}
 
-Ở đây ta để ý rằng *UnitFamily* có chứa 1 type *BaseUnit* nhưng không sử dụng đến, tại sao lại cần đến nó? Như ta biết trong thực tế, bất cứ công thức qui đổi nào đều cần dùng một đơn vị chuẩn. Giống như **F = ma**, *m* luôn là *kg*. Thế nên *BaseUnit* có thể hiểu là một *Unit* bất kì trong group được lấy ra làm chuẩn.
+Ở đây ta để ý rằng *UnitFamily* có chứa 1 type *BaseUnit* nhưng không sử dụng đến, tại sao lại cần đến nó? Như ta biết trong thực tế, bất cứ công thức qui đổi nào đều cần dùng một đơn vị chuẩn. Giống như **F = ma**, *m* luôn là *kg*, mọi khối lượng đều phải qui chuẩn về *kg* để đảm bảo tính đúng đắn của công thức. . 
+
+Thế nên *BaseUnit* có thể hiểu là một *Unit* bất kì trong group được lấy ra làm chuẩn.
+
+Ngoài ta trong *MyUnit* còn có đối tượng dùng để convert dữ liệu là **UnitConverter**. Đối tượng này có sẵn trong thư viện của táo khuyết và được giới thiệu trong phiên bản ios 10. 
 
 Tiếp theo ta cần tạo ra **Strong type** để không nhầm lẫn *Unit* này với *Unit* khác. 
 
@@ -88,7 +92,8 @@ extension MyMeasurement {
 }
 {{< /highlight >}}
 
-Bây giờ ta bắt đầu định nghĩa các loại tiền với kiểu dữ liệu Enum. Các *Unit* VND, USD, AUD đều chung 1 nhóm (Family) *MyCurrency* 
+Bây giờ ta bắt đầu định nghĩa các loại tiền với kiểu dữ liệu Enum. Các *Unit* VND, USD, AUD đều chung 1 nhóm (Family) *MyCurrency*. 
+
 
 {{< highlight objc "style=monokai" >}}
 // Group
@@ -103,6 +108,7 @@ enum VND: MyUnit {
         return "VND"
     }
     
+    // chuẩn không cần chỉnh
     static var converted: UnitConverter = UnitConverterLinear(coefficient: 1)
 }
 
@@ -115,15 +121,16 @@ enum USD: MyUnit {
     static var converted: UnitConverter = UnitConverterLinear(coefficient: 1*22.5)
 }
 
-enum AUD: MyUnit {
-    typealias Family = MyCurrency
-    static var symbol: String {
-        return "AUD"
-    }
-    
-    static var converted: UnitConverter = UnitConverterLinear(coefficient: 1*17.3)
-}
+// more ...
 {{< /highlight >}}
+
+Ta lấy VND để làm chuẩn cho việc qui đổi, thế nên ta khởi tạo đối tượng *UnitConverter* trong *enum VND* như sau
+
+{{< highlight objc "style=monokai" >}}
+static var converted: UnitConverter = UnitConverterLinear(coefficient: 1)
+{{< /highlight >}}
+
+Các đơn vị khác nhân theo tỉ giá đối với VND.
 
 OK, mọi thứ đã được định nghĩa một cách ổn thỏa. Bây giờ sếp trả lương cho ta theo 2 đợt, đợt 1 lấy vnd, đợt 2 lấy dollar Úc, ta muốn qui đổi ra VND để tiêu cho dễ.
 
