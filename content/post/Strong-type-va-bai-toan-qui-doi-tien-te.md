@@ -77,7 +77,7 @@ struct MyMeasurement<UnitType: MyUnit> {
 }
 {{< /highlight >}}
 
-*UnitType* không được sờ đến trong *MyMeasurement*, tác dụng của nó là **định danh**, qua đó hình thành **Strong type**, cũng có thể gọi là *Phantom Types*. Ta đã có **Strong type** theo cách rất đơn giản phải không? Tiếp theo là vấn đề convert.
+*UnitType* không được sờ đến trong *MyMeasurement*, tác dụng của nó là **định danh**, qua đó hình thành **Strong type**, cũng có thể gọi là *Phantom Types*. Ta đã có **Strong type** theo cách rất đơn giản phải không? Ta sẽ đi sâu vào hiệu quả của *Strong type* sau, trước hết ta nối tiếp đến vấn đề convert.
 
 Để convert được giữa các đơn vị theo cách chung nhất thì ta tạo *extension* cho *MyMeasurement* và có sử dụng *generic*.
 
