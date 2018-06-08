@@ -28,7 +28,7 @@ struct Bank {
 }
 {{< /highlight >}}
 
-Ngân hàng chỉ cho gửi VND, ta gửi bình thường theo cách sau 
+Ngân hàng chỉ cho gửi VND, nhưng chưa có cơ chế check. Ta gửi VND bình thường theo cách sau 
 
 > Bank(100) // VND
 
@@ -194,6 +194,8 @@ extension MyMeasurement: ExpressibleByFloatLiteral {
 Bây giờ thì ta chỉ cần thao tác
 
 > Bank(5.2) // ngân hàng vẫn check format VND
+
+Mọi người có thể lấy full [Source code](https://gist.github.com/gg4acrossover/2e62a7f67bc86c3bca48f81f8b508f28) ở đây.
 
 
 Tham khảo:
