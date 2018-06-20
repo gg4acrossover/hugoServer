@@ -103,18 +103,8 @@ Bạn có thể dùng cách này để khai báo singleton.
 Sử dụng overload toán tử là một cách hay để tiếp cận swift theo hướng functional.
 
 {{< highlight objc "style=monokai" >}}
-precedencegroup ForwardApplication {
-    associativity: left
-}
-infix operator |> : ForwardApplication
-func |> <A,B> (x: A, f: @escaping (A) -> B) -> B {
-    return f(x)
-}
-
-
 precedencegroup ForwardComposition {
     associativity: left
-    higherThan: ForwardApplication
 }
 infix operator >>> : ForwardComposition
 func >>> <A,B,C> (f: @escaping (A) -> B, g: @escaping (B) -> C) -> (A) -> C {
