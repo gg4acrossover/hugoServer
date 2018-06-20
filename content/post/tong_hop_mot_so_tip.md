@@ -83,12 +83,12 @@ let cell: YourCell = self.tableview.on_dequeue(idxPath: indexPath)
 
 Áp dụng tương tự với CollectionView.
 
-### Self
+### \`Self\`
 
 Nếu bạn đã từng dành cả tuổi thanh xuân để viết weakSelf, strongSelf thì đây là giải pháp cho bạn.
 Viết \`self\` sẽ giúp bạn sử dụng *self* như một biến, thay vì dùng nó như keyword.
 
-{{< highlight objc "style=monokai" >}}
+{{< highlight swift "style=monokai" >}}
 guard let `self` = self else {
     // return ...
 }
