@@ -16,17 +16,31 @@ author: ""
 
 *Có nhiều cách để làm đẹp hơn là làm bánh hay làm tình*
 
-Đây là phần 2 của [bài trước](https://gg4acrossover.github.io/hugosite/post/style-view/) tuy nhiên nó chẳng liên quan gì đến phần đầu cả :D. Ở phần đầu tiên mình đã giới thiệu một cách đơn giản để ta reuse lại code sử dụng *struct*. Phần này phức tạp hơn, ý tưởng dựa trên việc sử dụng **IBInspectable** để định hìnhh style cho *UIView*, như vậy bạn vừa có thể tự tạo style trong code, đồng thời cũng có thể tự cấu hình thông qua UI.
+Đây là phần 2 của [bài trước](https://gg4acrossover.github.io/hugosite/post/style-view/) tuy nhiên nó chẳng liên quan gì đến phần đầu cả :D. Ở phần đầu tiên mình đã giới thiệu một cách đơn giản để ta reuse lại code sử dụng *struct*. Phần này phức tạp hơn, ý tưởng dựa trên việc sử dụng **IBInspectable** để định hìnhh style cho *UIView*, bạn vừa có thể tự tạo style trong code, đồng thời cũng có thể tùy biến thông qua UI.
 
 ## Ý tưởng
 
-Trước hết nói về **IBInspectable** cho những bạn chưa biết. Bạn tạo một thuộc tính, bạn muốn cấu hình nó trên file Xib như các thuộc tính background color, font, align thì **IBInspectable** là keyword dành cho bạn.
+Trước hết nói về **IBInspectable** cho những bạn chưa biết. Bạn tạo một thuộc tính, bạn muốn cấu hình nó trên file Xib như làm với *background color, font, align* thì **IBInspectable** là keyword dành cho bạn.
 
-Tận dụng tính năng đó, mình muốn khi mình gõ tên style vào trong file Xib thì uiview sẽ khoác lên mình giao diện đã được định nghĩa sẵn. Để làm được việc này ta cần tạo 1 danh sách để định danh giao diện. Ví dụ gõ "bo tròn" thì sẽ gọi đến *class BorderStyle* để làm việc.
+![img1](/hugosite/images/note/style-ui/style-2-1.png)
+
+Tận dụng tính năng đó, mình muốn khi mình gõ tên style vào trong file Xib thì uiview sẽ khoác lên mình giao diện đã định nghĩa từ trước. Để làm được việc này ta cần tạo 1 danh sách để định danh giao diện. Ví dụ gõ "bo tròn" thì sẽ gọi đến *class BorderStyle* để làm việc.
+
+Hình dung các bước sẽ như sau:
+
+List danh sách style -> Lớp quản lý -> lấy ra style -> gắn vào UIView
+
+B1: tạo list style (register)
+
+B2: gắn list vào 1 lớp manager để quản lý danh sách đã tạo
+
+B3: lấy ra style cần dùng từ lớp manager
+
+B4: gắn vào UIView
 
 ## Show me the code
 
-Thời đại của protocol mà, sử dụng nó thôi, bước đầu ta tạo interface để định hướng behavior cho đối tượng
+Thời đại của protocol mà, sử dụng nó thôi, bước đầu ta tạo interface để định hướng behavior cho đối tượng. Ta tạo protocol định nghĩa Style và Register để quản lý danh sách Style như bước 1.
 
 ```
 protocol Style {
@@ -48,7 +62,9 @@ protocol StyleMapRegister {
 
 *Style* có 2 phương thức chính: một dùng để định danh cho Style, một để áp dụng style đó vào trong component cụ thể (uiview).
 *StyleMapRegister* có phương thức *getStyle*, giúp ta lấy được *Style* qua định danh đã define.
-Cuối cùng là đối tượng *Manager* quản lý *Style* và *StyleMapRegister*.
+Tiếp theo ta tạo đối tượng **Manager** quản lý danh sách Style theo bước 2. 
+
+Ở lớp **Manager** có phương thức *apply* để lấy ra style và gắn vào conponent (UIView) cụ thể, tương ứng với bước 3,4.
 
 ```
 class StyleManager {
@@ -73,7 +89,7 @@ class StyleManager {
 
 ```
 
-Việc tiếp theo, ta sẽ tạo 1 folder chứa tất cả các style của UIView, cần style nào thì lục tìm và gắn định danh style vào trong file Xib.
+Trong dự án, để dễ quản lý, ta sẽ tạo 1 folder riêng để chứa tất cả *Style* ta định nghĩa ra. Ta cần style nào thì tìm trong folder đó.
 
 Mình sẽ implement 2 protocol định nghĩa ở trên để có cái nhìn trực quan hơn với phương pháp này
 
@@ -177,7 +193,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 Với mỗi lần tạo *style*, ta có thể gắn vào view như sau
 
-![img1](/hugosite/images/note/style-ui/style.png)
+![img2](/hugosite/images/note/style-ui/style-2-2.png)
 
 Take it easy! [Source code](https://github.com/gg4acrossover/MEStyleView) cho ai cần tìm hiểu sâu :D
 
