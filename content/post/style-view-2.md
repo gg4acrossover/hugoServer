@@ -89,8 +89,6 @@ class StyleManager {
 
 ```
 
-Trong dự án, để dễ quản lý, ta sẽ tạo 1 folder riêng để chứa tất cả *Style* ta định nghĩa ra. Ta cần style nào thì tìm trong folder đó.
-
 Mình sẽ implement 2 protocol định nghĩa ở trên để có cái nhìn trực quan hơn với phương pháp này
 
 ```
@@ -113,7 +111,7 @@ class StyleMapRegisterObject: StyleMapRegister {
 
 ```
 
-*Dictionary* là kiểu dữ liệu hợp lý nhất trong trường hợp cần định danh style, tất cả style được tạo ra sẽ đưa vào 1 danh sách key - value để quản lý. Ta đã định nghĩa xong cách thức Register, giờ đến lúc tạo *Style*
+*Dictionary* là kiểu dữ liệu hợp lý nhất trong trường hợp cần định danh style, tất cả style được tạo ra sẽ đưa vào 1 danh sách key - value để quản lý. Thuộc tính *styleDict* để private vì ta cũng không cần quan tâm nó chứa gì, cái quan trọng nhất của lớp Register vẫn là lấy được style qua id. Ta đã định nghĩa xong cách thức Register, giờ đến lúc tạo *Style*
 
 ```
 class TitleLabelStyle: Style {
@@ -194,6 +192,8 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 Với mỗi lần tạo *style*, ta có thể gắn vào view như sau
 
 ![img2](/hugosite/images/note/style-ui/style-2-2.png)
+
+Để dễ quản lý *Style* khi đưa vào dự án, ta có thể nhóm chúng vào chung 1 folder.
 
 Take it easy! [Source code](https://github.com/gg4acrossover/MEStyleView) cho ai cần tìm hiểu sâu :D
 
