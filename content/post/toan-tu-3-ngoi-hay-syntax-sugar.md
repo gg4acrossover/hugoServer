@@ -1,5 +1,5 @@
 ---
-title: "Toán tử 3 ngôi  hay suger syntax"
+title: "Toán tử 3 ngôi  hay sugar syntax"
 date: 2018-11-06T09:36:44+07:00
 lastmod: 2018-11-06T09:36:44+07:00
 draft: false
@@ -10,8 +10,6 @@ categories: []
 author: ""
 
 ---
-
-<!--more-->
 
 ## Tình huống
 
