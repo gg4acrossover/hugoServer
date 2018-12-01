@@ -59,7 +59,39 @@ VD: *Development scheme* đi với *Debug build configuration*, hoặc *Producti
 
 ### B2:
 
-Điều chỉnh tên phần mềm theo phiên bản build
+Vào **Build Settings** của **Targets**, điều chỉnh tên phần mềm theo phiên bản build.
+
+![img-4]()
+
+### B3:
+
+Vẫn ở **Build Settings**, thay đổi **product bundle identifier** theo ý bạn muốn.
+
+Lưu ý: khi 1 phần mềm có nhiều *bundle identifier* cũng đồng nghĩa với việc bạn phải tạo từng ấy provisioning. Vậy nên nếu mục đích của bạn không cần tạo nhiều môi trường khác nhau thì có thể bỏ qua bước này.
+
+![img-5]()
+
+
+### B4:
+
+Bước này khá thú vị, ta thay đổi ảnh AppIcon cho từng phiên bản để dễ phân biệt.
+
+Chọn **Asset Category App Icon Set Name** thay đổi như hình sau.
+
+Bản Beta và dev sử dụng chung *AppIcon-Test*, đây là tên icon do mình tự custom, hãy nhớ tên của nó để mình dùng ngay sau đây.
+
+Bản Release sử dụng AppIcon, đây là giá trị default của icon trong **Asset.xcassets**
+
+![img-6]()
+
+### B5:
+
+Ta vào **Asset.xcassets** để thêm icon cho app, đồng thời add thêm 1 loại icon khác dành riêng cho bản dev.
+
+![img-7]()
+
+Qua 5 bước kể trên ta đã có thể tạo ra các phiên bản khác nhau cho cùng 1 app: 1 bản cho dev, 1 bản cho production, mỗi phiên bản 1 tên và icon riêng biệt.
+
 
 
 
