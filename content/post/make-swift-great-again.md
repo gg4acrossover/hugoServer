@@ -20,7 +20,50 @@ Dạo này thời tiết Hà Nội trở lạnh, post một bài cho nóng ngư�
 Sử dụng **defer** nếu như bạn là người hay quên :D. Tác dụng của **defer** là nó sẽ chạy sau khi hàm return.
 
 ```
-func doDefer() {
-	
+    var x = 1
+    func doDefer(_ value: inout Int) -> Int {
+        // effect after return
+        defer {
+            value += 1
+        }
+        
+        value += 1
+        return value
+    }
+    
+    print(doDefer(&x)) // 2
+    print(x) // 3
+```
+
+Với tác dụng của hàm defer ta có thể tận dụng để giải phóng bộ nhớ, close file hay bất cứ tác vụ nào đòi hỏi 2 bước ràng buộc lúc bắt đầu và kết thúc.
+
+## Lazy
+
+Sử dụng lazy trong trường hợp lấy ra một vài phần tử của mảng (lấy hết có khi phản tác dụng). Như ví dụ sau đây, ta filter như bình thường thì sẽ mất 11 bước tính toán, còn lazy mất 3 bước tính toán.
+
+```
+    let arr = [Int](1...10)
+    _ = arr.filter{ $0 % 2 == 0 } // 11 times
+    let lazy = arr.lazy.filter{ $0 % 2 == 0 } // 3 times
+    lazy.first
+    lazy.endIndex
+```
+
+## Extension
+
+Rất thích hợp dùng với **Notification**, ta tập hợp tất cả các key vào chung 1 file để quản lý.
+
+Có thể áp dụng tương tượng với **UserDefault**.
+
+```
+extension Notification.Name {
+    typealias Nf = Notification.Name
+    static let showMeTheCode = Nf("show me the code")
 }
+
+NotificationCenter.default.addObserver(
+	###, 
+	selector: ###, 
+	name: .showMeTheCode, 
+	object: nil)
 ```
