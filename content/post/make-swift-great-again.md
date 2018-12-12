@@ -39,7 +39,7 @@ Với tác dụng của hàm defer ta có thể tận dụng để giải phóng
 
 ## Lazy
 
-Sử dụng lazy trong trường hợp lấy ra một vài phần tử của mảng (lấy hết có khi phản tác dụng). Như ví dụ sau đây, ta filter như bình thường thì sẽ mất 11 bước tính toán, còn lazy mất 3 bước tính toán.
+Sử dụng lazy trong trường hợp lấy ra một vài phần tử của mảng (lấy hết có khi phản tác dụng). Như ví dụ sau đây, ta filter như bình thường thì sẽ mất 11 bước tính toán, còn lazy mất 3 bước tính toán (test trên playground).
 
 ```
     let arr = [Int](1...10)
@@ -53,7 +53,6 @@ Sử dụng lazy trong trường hợp lấy ra một vài phần tử của m�
 
 Rất thích hợp dùng với **Notification**, ta tập hợp tất cả các key vào chung 1 file để quản lý.
 
-Có thể áp dụng tương tượng với **UserDefault**.
 
 ```
 extension Notification.Name {
@@ -67,3 +66,46 @@ NotificationCenter.default.addObserver(
 	name: .showMeTheCode, 
 	object: nil)
 ```
+
+Có thể áp dụng tương tượng với **UserDefault**.
+
+```
+extension UserDefaults {
+    struct Key: ExpressibleByStringLiteral {
+        let drawValue: String
+        init(stringLiteral value: StringLiteralType) {
+            self.drawValue = value
+        }
+    }
+}
+
+extension UserDefaults {
+    func value<T>(key: Key, as: T.Type? = nil) -> T? {
+        return self.value(forKey: key.drawValue) as? T
+    }
+    
+    func set(value: Any, forKey key: Key) {
+        self.set(value, forKey: key.drawValue)
+    }
+}
+
+extension UserDefaults.Key {
+    typealias Key = UserDefaults.Key
+    static let viewCounter: Key = "viewCounter" // ExpressibleByStringLiteral power :D
+}
+
+// Example
+do {
+    let usrDefault = UserDefaults.standard
+    usrDefault.set(value: "aa", forKey: .viewCounter)
+    if let x: String = usrDefault.value(key: .viewCounter) {
+        print(x)
+    }
+}
+```
+
+Lưu ý để viết được là
+
+> static let viewCounter: Key = "viewCounter"
+
+Ta phải sử dụng *ExpressibleByStringLiteral*
