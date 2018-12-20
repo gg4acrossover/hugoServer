@@ -1,8 +1,8 @@
 ---
-title: "Make Swift Great Again"
+title: "Make swift great again"
 date: 2018-12-11T17:39:09+07:00
 lastmod: 2018-12-11T17:39:09+07:00
-draft: true
+draft: false
 keywords: []
 description: ""
 tags: ["swift"]
@@ -11,7 +11,7 @@ author: ""
 
 ---
 
-# Make swift great again
+# Làm swift toẹt vời trở lại
 
 Dạo này thời tiết Hà Nội trở lạnh, post một bài cho nóng người :D. Lần này mình sẽ trình bày về một số tip để làm code trông swifty hơn.
 
