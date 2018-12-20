@@ -13,7 +13,81 @@ author: ""
 
 Bạn có biết rằng trên thế giới có một cộng đồng anti if,else. Trên đường đi tìm đường cách mệnh, coi như cũng tạo chút thử thách cho bản thân, mình đã tìm ra một số phương pháp tương đối hữu ích.
 
-# Filter
+# 1. Thủ thuật refactor
+
+Các phương pháp này có thể coi như là trick để code trông gọn hơn, đồng thời loại bỏ *if*.
+
+## Dictionary
+
+Đây là phương pháp mình sử dụng từ lâu. Với phương pháp này thì ta có thể refactor hàm sau:
+
+```
+func getEpisode(_ id: String) -> Episode? {
+    if id = "E1" {
+    	return episode_1
+    } else if id = "E2" {
+    	return episode_2
+    } else if {
+    	...
+    }
+
+    ...
+}
+```
+
+Thành dạng như sau
+
+```
+let dict = ["E1": episode_1,
+            "E2": episode_2,
+            "E3": episode_3]
+
+func getEpisode(_ id: String) -> Episode? {
+    return dict[id]
+}
+```
+
+## Enum
+
+Nên sử dụng enum với những cái nào có chung format như ở trường hợp sau
+
+Thay vì
+
+```
+func play(type: Format) {
+    switch type {
+    	case .video: self.playVideo()
+    	case .audio: self.playAudio()
+    	...
+    }
+}
+```
+
+Tên các method ở trên đều có chung format play**%TYPE%**. Ta có thể gọi nó thông qua *selector* để loại bỏ hẳn *if*
+
+```
+enum Format: String {
+    case video
+    case audio
+    case image
+}
+
+class Player: NSObject {
+    func play(type: Format) {
+        let selector = Selector.init("play\(type.rawValue.capitalized)")
+        self.perform(selector)
+    }
+}
+
+// Result
+Player().play(type: .video)
+```
+
+Để sử dụng **selector**, các phương thức cần gắn thêm tiền tố **@objc** và class cần kế thừa **NSObject**.
+
+# 2. Sử dụng functional programming
+
+## Filter
 
 Đây là phương thức trong bộ tam *filter, map, reduce* ra đời kèm ngay ở phiên bản đầu của swift. Param truyền vào filter có dạng tổng quát như sau:
 
@@ -86,7 +160,7 @@ Bạn thấy đó, với *functional* ta dễ dàng tách các đoạn kiểm tr
 
 Để hiểu rõ hơn về hàm **bind** và **checkAll**, mình có đưa nó vào trong code ví dụ.
 
-# Refinement type
+## Refinement type
 
 Thế nào là [refinement type](https://en.wikipedia.org/wiki/Refinement_type)
 
@@ -134,6 +208,17 @@ public extension Refinement {
 ```
 
 Code ví dụ [source](https://github.com/gg4acrossover/NoIf)
+
+# 3. Mở rộng
+
+Ngoài những cách trên thì còn rất nhiều cách để giảm thiểu if else:
+
++ Sử dụng đa hình
++ Tách hàm
++ switch case :v
++ Sử dụng hàm cond (như trong Lisp)
++ Blah blah
+
 
 ---
 
