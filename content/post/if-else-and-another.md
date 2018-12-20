@@ -11,7 +11,7 @@ author: ""
 
 ---
 
-Bạn có biết rằng trên thế giới có một cộng đồng anti if,else. Trên đường đi tìm đường cách mệnh, coi như cũng tạo chút thử thách cho bản thân, mình đã tìm ra một số phương pháp tương đối hữu ích.
+Bạn có biết rằng trên thế giới có một cộng đồng anti if, else. Trên đường đi tìm đường cách mệnh, coi như cũng tạo chút thử thách cho bản thân, mình đã tìm ra một số phương pháp tương đối hữu ích.
 
 # 1. Thủ thuật refactor
 
@@ -77,6 +77,8 @@ class Player: NSObject {
         let selector = Selector.init("play\(type.rawValue.capitalized)")
         self.perform(selector)
     }
+
+    ...
 }
 
 // Result
@@ -89,13 +91,13 @@ Player().play(type: .video)
 
 ## Filter
 
-Đây là phương thức trong bộ tam *filter, map, reduce* ra đời kèm ngay ở phiên bản đầu của swift. Param truyền vào filter có dạng tổng quát như sau:
+Đây là phương thức trong bộ tam *filter, map, reduce* ra đời kèm ngay ở phiên bản đầu của swift. Param truyền vào **filter** có dạng tổng quát như sau:
 
 > (T) -> Bool // hàm truyền vào 1 giá trị và return bool
 
-Như vậy ta có thể truyền vào tên hàm thay thay vì định nghĩa ra nó.
+Như vậy ta có thể truyền vào tên hàm thay vì định nghĩa ra nó.
 
-Giả sử bài toán ta đang giải quyết là tìm số nguyên dương trong mảng, thay vì viết như:
+Giả sử bài toán ta đang giải quyết là tìm số nguyên dương trong mảng, thay vì viết:
 
 ```
 arr.filter { (value) -> Bool in
@@ -103,7 +105,7 @@ arr.filter { (value) -> Bool in
 }
 ```
 
-Ta có thể áp dụng công thức tổng quát như trên để hàm ngắn gọn, rõ nghĩa hơn
+Ta có thể áp dụng công thức tổng quát như trên để hàm ngắn gọn, rõ nghĩa hơn.
 
 ```
 // (Int) -> Bool
@@ -115,7 +117,7 @@ arr.filter(positive)
 
 ```
 
-Nếu có nhiều hơn một điều kiện, ta có thể tổng hợp lại các hàm làm một. Giả sử ta muốn tìm số vừa lớn hơn 0 vừa nhỏ hơn 100, ta viết thêm điều kiện
+Nếu có nhiều hơn một điều kiện, ta có thể tổng hợp lại các hàm làm một. Giả sử ta muốn tìm số vừa lớn hơn 0 vừa nhỏ hơn 100, ta viết thêm điều kiện:
 
 ```
 func lessThan100(x: Int) -> Bool {
@@ -123,7 +125,7 @@ func lessThan100(x: Int) -> Bool {
 }
 ```
 
-Sử dụng phương pháp composite, ta sẽ có 1 hàm dạng như: **condition = lessThan100 & positive**
+Sử dụng phương pháp **composite**, ta sẽ có 1 hàm dạng như: **condition = lessThan100 & positive**
 
 ```
 public class func allPass<A>(_ array: [(A) -> Bool], value: A) -> Bool {
@@ -139,7 +141,7 @@ public class func allPass<A>(_ array: [(A) -> Bool]) -> (A) -> Bool {
 }
 ```
 
-Mình tạo 2 phương thức đều có tên **allPass**, phương thức đầu trả về *Bool*, còn phương thức thứ hai có dạng *curry function* (hàm nhận vào 1 param và trả ra 1 hàm khác). Cả 2 hàm chỉ khác nhau về cách thức tạo nhưng cùng chung 1 mục đích sử dụng.
+Mình tạo 2 phương thức đều có tên **allPass**, phương thức đầu trả về *Bool*, còn phương thức thứ hai có dạng *curry function* (hàm nhận vào 1 param và trả ra 1 hàm khác). Cả 2 hàm khác nhau về cách thức tạo nhưng cùng chung 1 mục đích sử dụng (tạm thời không bàn đến *bind* và *checkAll*)
 
 Với 2 phương thức nêu trên ta có thể composite 2 điều kiện **positive** và **lessThan100** theo cách như sau
 
@@ -149,16 +151,22 @@ Và hàm filter sẽ được viết ngắn gọn như sau:
 
 ```
 func doFilterAll(_ value: Int) -> Bool {
+    // open comments below to use curry function
+    // let and = V.allPass([positive,lessThan100]) // (Int) -> Bool
+    // return and(value)
+    
+    // using function return bool
     return V.allPass([positive,lessThan100], value: value)
 }
+
 arr.filter(doFilterAll)
 ```
 
-Ta có thể làm tương tự để có phương thức **Or** để tìm ra giá trị thỏa mãn 1 điều khiện trong tất cả các điều kiện cung cấp.
+Làm tương tự, ta có thể tạo hàm **Or** để tìm giá trị thỏa mãn 1 điều kiện trong tất cả các điều kiện được cung cấp.
 
 Bạn thấy đó, với *functional* ta dễ dàng tách các đoạn kiểm tra điều kiện ra thành hàm riêng, dễ dàng tổng hợp chúng, đồng thời dễ test và tái sử dụng.
 
-Để hiểu rõ hơn về hàm **bind** và **checkAll**, mình có đưa nó vào trong code ví dụ.
+Để hiểu rõ hơn về hàm **bind** và **checkAll**, mình có đưa nó vào trong code ví dụ ở cuối bài viết.
 
 ## Refinement type
 
@@ -180,7 +188,7 @@ Both<Positive<Float>,LessThan100<Float>>.of(99)?.value // 99
 Both<Positive<Float>,LessThan100<Float>>.of(101)?.value // nil
 ``` 
 
-Như bạn thấy đã thấy, 100 thỏa mãn điều kiện lớn hơn 0, 99 thỏa mãn điều kiện nhỏ hơn 100 nên ta có thể sử dụng, trong trường hợp không thỏa mãn (-1,101) giá trị nil được trả về.
+Như bạn thấy đã thấy, 100 thỏa mãn điều kiện lớn hơn 0; 99 thỏa mãn điều kiện nhỏ hơn 100 nên ta có thể sử dụng. Trong trường hợp không thỏa mãn (-1,101), giá trị nil được trả về.
 
 Thậm chí ta chưa dùng tí **if** nào :D
 
@@ -207,6 +215,10 @@ public extension Refinement {
 }
 ```
 
+Sử dụng sơ đồ khối để dễ hình dung
+
+![img](/hugosite/images/note/if-else/Refinement-type.png)
+
 Code ví dụ [source](https://github.com/gg4acrossover/NoIf)
 
 # 3. Mở rộng
@@ -216,7 +228,7 @@ Ngoài những cách trên thì còn rất nhiều cách để giảm thiểu if
 + Sử dụng đa hình
 + Tách hàm
 + switch case :v
-+ Sử dụng hàm cond (như trong Lisp)
++ Sử dụng hàm cond (như trong [Lisp](https://vi.wikipedia.org/wiki/Lisp))
 + Blah blah
 
 
