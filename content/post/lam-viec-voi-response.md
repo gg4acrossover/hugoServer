@@ -29,7 +29,7 @@ Tuy nhiên sử dụng type *Any* có nhiều hạn chế: chúng ta phải bi�
 
 Vì vậy chúng ta cần nghĩ ra các phương án khác thay thế *Any*.
 
-# Generic
+## Sử dụng Generic và protocol
 
 Trước hết tách những trường mặc định ra 1 struct riêng
 
@@ -38,41 +38,26 @@ struct ResponseInfo {
     let timestamp: String
     let error: Error?
 }
-
-struct Response {
-    let info: ResponseInfo
-    let payload: Any
-}
 ```
 
-Tùy chỉnh lại một chút
+Định nghĩa thêm protocol **ResponseType** để tiện mở rộng cho *payload* về sau. 
+Tùy chỉnh lại code cũ một chút, ta có được hình hài mới cho *Response*:
 
 ```swift
-struct Response<T> {
+protocol ResponseType {}
+
+struct Response<T: ResponseType> {
     let info: ResponseInfo
-    let payload: <T>
+    let payload: T
 }
 ```
 
 Như vậy ứng với dữ liệu trả về khác nhau, ta có thể viết như sau
 
 ```swift
-extension Response where T == User {
-    init(info: ResponseInfo, user: User) {
-        self.info = info
-        self.payload = user
-    }
-}
-
-extension Response where T == Book {
-    init(info: ResponseInfo, book: Book) {
-        self.info = info
-        self.payload = book
-    }
-}
-
-let bookResponse = Response(info: info, book: book)
-let userResponse = Response(info: info, user: user)
+let bookResponse = Response(info: info, payload: book)
+let userResponse = Response(info: info, payload: user)
+//...
 ```
 
 Dùng *generic* khi gọi đến property payload ta không phải ép kiểu nữa.
@@ -82,36 +67,7 @@ bookResponse.payload // Book
 userResponse.payload // User
 ```
 
-# protocol
-
-```swift
-// 1. define protocol
-protocol ResponseType {}
-
-// 2. inherited ResponseType protocol
-struct User: ResponseType
-struct Book: ResponseType
-
-struct Response {
-    let info: ResponseInfo
-    let payload: ResponseType
-}
-
-extension Response {
-    init(info: ResponseInfo, user: User) {
-        self.info = info
-        self.payload = user
-    }
-}
-```
-
-Dùng *protocol* có vẻ phức tạp hơn dùng *generic* khá nhiều. Chúng ta phải gán các payload kế thừa protocol *ResponseType*. Hơn nữa khi sử dụng payload cũng vẫn phải ép kiểu. Như vậy cực chẳng đã, thà dùng *Any* còn đơn giản hơn :v.
-
-```swift
-let result = v.payload as! User
-```
-
-# Gán thêm phương thức vào Response
+## Gán thêm phương thức vào Response
 
 Bây giờ mình muốn thêm phương thức vào trong response để tiện debug, ứng với mỗi response ta có thêm description.
 
@@ -123,31 +79,68 @@ với payload là *Book* tương ứng với description "response" + Book.descr
 Muốn như vậy ta phải implement như sau
 
 ```swift
-// 1 
-struct Response<T>: CustomStringConvertible where T: CustomStringConvertible {
-    var description: String {
-        return "response: " + payload.description
+protocol ResponseType: CustomDebugStringConvertible {}
+
+struct User: ResponseType {
+    var debugDescription: String {
+        return "{username: \(username), age: \(age)}"
     }
     
-    let info: ResponseInfo
-    let payload: T
+    // ...
 }
 
-// 2
-struct User: CustomStringConvertible {
-    var description: String {
-      return "{username: \(username), password: \(password)}"
+extension Response: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "response: \(self.payload.debugDescription)"
     }
-    
-    //...
 }
 
-//...
+// ...
 ```
 
-Vì không thể xác định được T trước khi khởi tạo đối tượng, chúng ta phải gán protocol cho cả Response và T để tạo description cho Response.
-Như vậy để add thêm phương thức ứng vào Response với cách sử dụng **generic** là tương đối to tay.
+Đoạn code trên cũng khá đơn giản, mình tận dụng lại **CustomDebugStringConvertible** có sẵn để thêm description cho *Response* và cả *payload*.
 
+Việc gán protocol **ResponseType** cho *payload* đảm bảo tất cả đối tượng implement lại protocol này đều phải thêm thuộc tính *debugDescription*.
 
+Nếu ta muốn thêm phương thức khác vào trong *payload*, đơn giản chỉ cần tạo protocol mới và cho **ResponseType** kế thừa
 
+```swift
+protocol ResponseType: CustomDebugStringConvertible, Jsonable,... {}
+```
+Tuy nhiên giờ mình muốn quản lý tất cả *payload* ở một chỗ. Lúc này *Enum* phát huy tác dụng.
 
+## Sử dụng Enum
+
+Ta tạo enum chứa tất cả các type của *payload*. Lúc này Response cũng sẽ chỉnh sửa lại chút, gán **enum type** cho *payload* thay vì *generic*
+
+```swift
+enum ResponsePayload {
+    case userDetail(User)
+    case bookDetail(Book)
+    // ...
+}
+
+struct Response {
+    let info: ResponseInfo
+    let payload : ResponsePayload
+}
+
+let newUser = Response(info: info, payload: .userDetail(user))
+```
+Lúc này muốn sử dụng payload, ta cần thêm một công đoạn nữa, chứ không gọi trực tiếp như sử dụng *generic*.
+
+```swift
+if case .userDetail(_) = newUser.payload {
+    // use payload
+} else {
+    fatalError()
+}
+```
+
+Muốn gán thêm phương thức mới cho *payload* cũng làm tương tự như đối với sử dụng *generic*
+
+# Tổng kết
+
+* Sử dụng **generic** code gọn hơn sử dụng **enum**, tuy nhiên nhược điểm là phân tán, khó tập trung vào 1 chỗ để quản lý.
+
+* Sử dụng **enum** code dài hơn chút, nhưng ta gom được tất cả vào 1 chỗ, dễ quản lý hơn.
