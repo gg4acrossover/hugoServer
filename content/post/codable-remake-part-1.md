@@ -2,7 +2,7 @@
 title: "Codable remake part 1"
 date: 2019-04-26T10:46:46+07:00
 lastmod: 2019-04-26T10:46:46+07:00
-draft: true
+draft: false
 keywords: ["codable"]
 description: "codable"
 tags: ["swift"]
@@ -90,11 +90,15 @@ let container = try decoder.container(keyedBy: CodingKeys.self)
 Trên đây là các bước cần thiết khi ta sử dụng *Decodable* để parse dữ liệu. Tuy nhiên ta có thể để compiler trợ giúp ta một số công đoạn viết code.
 
 ```swift
-extension Baller: Codable {}
+extension Baller: Decodable {}
 let decoder = JSONDecoder()
 let instance = try decoder.decode(Baller.self, from: json)
 instance.userName // "crossover"
 ```
+
+Như đoạn code trên ta không phải tạo *CodingKey*, không phải implement hàm *init(from decoder: Decoder) throws*, chỉ phải làm mỗi bước thứ 3.
+
+## keyDecodingStrategy
 
 Một số trường hợp đặc biệt, convention ở backend sử dụng snake_case (key "userName" ở trên thay đổi thành "user_name")
 
@@ -110,6 +114,25 @@ Trong khi đó mobile sử dụng camelCase, ta cũng có thể xử lý ngắn 
 let decoder = JSONDecoder()
 decoder.keyDecodingStrategy = .convertFromSnakeCase
 ```
+
+## dateDecodingStrategy
+
+Một tình huống cũng hay gặp phải là ta phải parse dữ liệu dạng **Date** mà json thì không có format date, time rồi. Chưa kể trường hợp phải convert từ string sang date nữa. **JSONDecoder** có thuộc tính hỗ trợ ta trong việc convert string sang dạng date là **dateDecodingStrategy**
+
+Giả sử ta cần parse dữ liệu như sau:
+
+``` json
+{
+  "checkin": "2019-04-26T07:51:30+0000",
+  ...
+}
+```
+
+Ta có thể dùng đoạn code sau để convert string về type **Date**
+
+> decoder.dateDecodingStrategy = .iso8601
+
+Mình đang sử dụng chuẩn .iso8601, nếu bạn muốn tùy biến format thì có thể dùng type **.formatted(<#DateFormatter#>)**
 
 # Encodable
 
