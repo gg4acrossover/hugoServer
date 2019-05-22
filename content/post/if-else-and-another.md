@@ -21,7 +21,7 @@ Các phương pháp này có thể coi như là trick để code trông gọn h�
 
 Đây là phương pháp mình sử dụng từ lâu. Với phương pháp này thì ta có thể refactor hàm sau:
 
-```
+```swift
 func getEpisode(_ id: String) -> Episode? {
     if id = "E1" {
     	return episode_1
@@ -37,7 +37,7 @@ func getEpisode(_ id: String) -> Episode? {
 
 Thành dạng như sau
 
-```
+```swift
 let dict = ["E1": episode_1,
             "E2": episode_2,
             "E3": episode_3]
@@ -53,7 +53,7 @@ Nên sử dụng enum với những cái nào có chung format như ở trườn
 
 Thay vì
 
-```
+```swift
 func play(type: Format) {
     switch type {
     	case .video: self.playVideo()
@@ -65,7 +65,7 @@ func play(type: Format) {
 
 Tên các method ở trên đều có chung format play**%TYPE%**. Ta có thể gọi nó thông qua *selector* để loại bỏ hẳn *if*
 
-```
+```swift
 enum Format: String {
     case video
     case audio
@@ -99,15 +99,15 @@ Như vậy ta có thể truyền vào tên hàm thay vì định nghĩa ra nó.
 
 Giả sử bài toán ta đang giải quyết là tìm số nguyên dương trong mảng, thay vì viết:
 
-```
+```swift
 arr.filter { (value) -> Bool in
     return value > 0
 }
 ```
 
-Ta có thể áp dụng công thức tổng quát như trên để hàm ngắn gọn, rõ nghĩa hơn.
+Ta có thể truyền tên hàm vào trong **filter** để code ngắn gọn, rõ nghĩa hơn.
 
-```
+```swift
 // (Int) -> Bool
 func positive(x: Int) -> Bool {
 	return x > 0
@@ -119,15 +119,19 @@ arr.filter(positive)
 
 Nếu có nhiều hơn một điều kiện, ta có thể tổng hợp lại các hàm làm một. Giả sử ta muốn tìm số vừa lớn hơn 0 vừa nhỏ hơn 100, ta viết thêm điều kiện:
 
-```
+```swift
 func lessThan100(x: Int) -> Bool {
     return x < 100
 }
 ```
 
-Sử dụng phương pháp **composite**, ta sẽ có 1 hàm dạng như: **condition = lessThan100 & positive**
+Tiếp theo, ta sử dụng phương pháp **composite** để có 1 hàm dạng như: **lessThan100AndPositive = lessThan100 & positive**. Lúc đó code sẽ gọn gàng ngăn nắp như này:
 
-```
+> arr.filter(lessThan100AndPositive)
+
+Nhưng trước hết, ta sẽ định nghĩa hai phương thức helper để tổng hợp điều kiện thuận tiện hơn và dễ dàng tái sử dụng lại code
+
+```swift
 public class func allPass<A>(_ array: [(A) -> Bool], value: A) -> Bool {
     let predicate = array.map({ V.bind(value: value, to: $0) }) // [() -> Bool]
     return checkAll(predicate)
@@ -149,7 +153,7 @@ Với 2 phương thức nêu trên ta có thể composite 2 điều kiện **pos
 
 Và hàm filter sẽ được viết ngắn gọn như sau:
 
-```
+```swift
 func doFilterAll(_ value: Int) -> Bool {
     // open comments below to use curry function
     // let and = V.allPass([positive,lessThan100]) // (Int) -> Bool
@@ -181,7 +185,7 @@ Như định nghĩa trên, *refinement type* sẽ có 2 thành phần:
 
 Hai thành phần này có mối liên hệ chặt chẽ, còn liên kết thế nào thì có thể xem đoạn code ngay sau đây.
 
-```
+```swift
 Positive<Double>.of(100.0)?.value // 100
 Positive<Int>.of(-1)?.value // nil
 Both<Positive<Float>,LessThan100<Float>>.of(99)?.value // 99
@@ -194,7 +198,7 @@ Thậm chí ta chưa dùng tí **if** nào :D
 
 Đoạn code định nghĩa *refinement type* như sau
 
-```
+```swift
 public protocol Refinement {
     associatedtype RefinedType
     static func pass(_ value: RefinedType) -> Bool
