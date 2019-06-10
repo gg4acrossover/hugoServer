@@ -159,6 +159,8 @@ Sau các bước này mọi người sẽ có 1 uitableview không có header, f
 
 Tham khảo:
 
-[https://www.raywenderlich.com/527-custom-uicollectionviewlayout-tutorial-with-parallax](https://www.raywenderlich.com/527-custom-uicollectionviewlayout-tutorial-with-parallax)
-[https://developer.apple.com/documentation/uikit/uicollectionviewlayout](https://developer.apple.com/documentation/uikit/uicollectionviewlayout)
-[https://developer.apple.com/documentation/uikit/uicollectionviewlayout](https://stackoverflow.com/questions/1210047/cocoa-whats-the-difference-between-the-frame-and-the-bounds)
+- [https://www.raywenderlich.com/527-custom-uicollectionviewlayout-tutorial-with-parallax](https://www.raywenderlich.com/527-custom-uicollectionviewlayout-tutorial-with-parallax)
+
+- [https://developer.apple.com/documentation/uikit/uicollectionviewlayout](https://developer.apple.com/documentation/uikit/uicollectionviewlayout)
+
+- [https://stackoverflow.com/questions/1210047/cocoa-whats-the-difference-between-the-frame-and-the-bounds](https://stackoverflow.com/questions/1210047/cocoa-whats-the-difference-between-the-frame-and-the-bounds)
