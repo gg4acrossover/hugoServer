@@ -1,5 +1,5 @@
 ---
-title: "Get Urls From String"
+title: "Lấy url từ string"
 date: 2019-07-11T11:08:05+07:00
 lastmod: 2019-07-11T11:08:05+07:00
 draft: false
@@ -11,7 +11,7 @@ author: "viethq"
 
 ---
 
-# Lấy url từ string
+# Từ một lời thắc mắc
 
 Bạn đã bao giờ tự hỏi làm thế nào để lấy ra url từ string ko?
 Cách đơn giản hướng đến đầu tiên là split string ra rồi đưa vào hàm *URL.init*
