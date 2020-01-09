@@ -61,7 +61,7 @@ Domain sẽ có: *Entity* và *Entity Gateway(interface)*
 
 Tầng này sẽ chứa các đối tượng implement *EntityGateway* như đã nói ở phía trên. Đúng như mô hình clean architecture, tầng dưới sẽ chìa ra interface cho tầng trên implement để giao tiếp với bên dưới.
 
-Trong tầng này chứa *Usercase* interface, có chỗ sẽ gọi là *Interator*. *Usercase* sẽ định nghĩa logic nghiệp vụ để tầng tiếp theo bên ngoài thực thi, bản thân nó sẽ chứa một *EntityGateway implement* để lấy ra entity cần thiết, đưa qua cách kênh phân phối để hiển thị lên app.
+Trong tầng này chứa *Usercase* interface, có chỗ sẽ gọi là *Interaction*. *Usercase* sẽ định nghĩa logic nghiệp vụ để tầng tiếp theo bên ngoài thực thi, bản thân nó sẽ chứa một *EntityGateway implement* để lấy ra entity cần thiết, đưa qua cách kênh phân phối để hiển thị lên app.
 
 Để chìa output ra bên ngoài thì *Usercase* sử dụng interface *Output*, tạm gọi là *UsercaseOuput*. Mục đích để cho usercase có thể giao tiếp với bên ngoài. *Presenter* của chúng ta sẽ implement cái *UsercaseOuput* và sử dụng ở tầng bên ngoài cùng, mình gọi là *App*
 
