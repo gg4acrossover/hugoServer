@@ -97,7 +97,7 @@ Túm váy lại, gói gọn nó vào trong 1 vài từ:
 
 Áp dụng nhiều tầng nhiều lớp thì việc triển khai ban đầu sẽ phức tạp nhưng dễ dàng cho việc maintain và tái sử dụng code, cả cho test nữa. Thế nên nó nên được sử dụng cho môi trường doanh nghiệp, nơi có business logic phức tạp hoặc bạn tự làm pet project để học :D. Ngoài ra thì cứ áp dụng phương châm 
 
-> Make MVC greate again
+> Make MVC great again
 
 Hoặc dùng cái này https://iosarchitecture.top/
 
