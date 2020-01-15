@@ -2,7 +2,7 @@
 title: "Một số tip cho ngày cuối năm"
 date: 2020-01-16T00:33:52+07:00
 lastmod: 2020-01-16T00:33:52+07:00
-draft: true
+draft: false
 keywords: ["Share"]
 description: "Share"
 tags: ["Share"]
